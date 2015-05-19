@@ -1,0 +1,16 @@
+Package: skycalc
+Type: Package
+Title: Calculating Sky Events based on AAplus AA+ v1.56
+Version: 0.1.1
+Date: 2015-3-21
+Authors@R: person("Jinlong", "Zhang", role = c("aut", "cre"),
+		     email = "jinlongzhang01@gmail.com")
+Author: Jinlong Zhang [aut, cre]
+Maintainer: Jinlong Zhang <jinlongzhang01@gmail.com>
+Description: This is an wrapper package for AA++ library. 
+             AA++ is an C++ library for Astronomical Algorithms by Jeen Meeus. 
+License: GPL-2
+Depends: Rcpp (>= 0.10.5)
+LinkingTo: Rcpp
+LazyLoad: yes
+URL: https://github.com/helixcn/skycalc/

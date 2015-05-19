@@ -1,0 +1,2 @@
+useDynLib(skycalc)
+exportPattern("^[[:alpha:]]+")
