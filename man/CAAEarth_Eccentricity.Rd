@@ -27,7 +27,6 @@ the eccentricity of Earth's orbit.
 \note{
 }
 \seealso{
-
 }
 \examples{
 CAAEarth_Eccentricity(JD = 2456655.5)

@@ -95,10 +95,17 @@ CAA2DCoordinate CAAPrecession::PrecessEquatorial(double Alpha, double Delta, dou
   Alpha = CAACoordinateTransformation::HoursToRadians(Alpha);
   Delta = CAACoordinateTransformation::DegreesToRadians(Delta);
 
-  double sigma = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (0.30188 - 0.0000344*T)*tsquared + 0.017988*tcubed;
+  double sigma = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (0.30188 - 0.000344*T)*tsquared + 0.017988*tcubed;
   sigma = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, sigma));
-
-  double zeta = (2306.2181 + 1.39656*T - 0.000138*Tsquared)*t + (1.09468 + 0.000066*T)*tsquared + 0.018203*tcubed;
+  //// Fixed two transcription bugs in the CAAPrecession::PrecessEquatorial method. 
+  //// The"0.000344*T" term was incorrectly using "0.0000344*T" when calculating "sigma" 
+  //// and the "0.000139*Tsquared" term was incorrectly using "0.000138*Tsquared" when 
+  //// calculating "zeta". Thanks to Erik Grosse for reporting this bug. 
+  //// The errors were so small that the values from the worked example of 21.b from 
+  //// the book ended up giving the same results. If a longer timespan was used for the 
+  //// example instead of the 28 years then the errors would have been easier to spot with the incorrect terms.
+   
+  double zeta = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (1.09468 + 0.000066*T)*tsquared + 0.018203*tcubed;
   zeta = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, zeta));
 
   double phi = (2004.3109 - 0.8533*T - 0.000217*Tsquared)*t -  (0.42665 + 0.000217*T)*tsquared - 0.041833*tcubed;
@@ -285,11 +292,19 @@ double JD = as<double>(JD_);
   Alpha = CAACoordinateTransformation::HoursToRadians(Alpha);
   Delta = CAACoordinateTransformation::DegreesToRadians(Delta);
 
-  double sigma = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (0.30188 - 0.0000344*T)*tsquared + 0.017988*tcubed;
+  double sigma = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (0.30188 - 0.000344*T)*tsquared + 0.017988*tcubed;
   sigma = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, sigma));
-
-  double zeta = (2306.2181 + 1.39656*T - 0.000138*Tsquared)*t + (1.09468 + 0.000066*T)*tsquared + 0.018203*tcubed;
+   
+  double zeta = (2306.2181 + 1.39656*T - 0.000139*Tsquared)*t + (1.09468 + 0.000066*T)*tsquared + 0.018203*tcubed;
   zeta = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, zeta));
+  //// Fixed two transcription bugs in the CAAPrecession::PrecessEquatorial method. 
+  //// The"0.000344*T" term was incorrectly using "0.0000344*T" when calculating "sigma" 
+  //// and the "0.000139*Tsquared" term was incorrectly using "0.000138*Tsquared" when 
+  //// calculating "zeta". Thanks to Erik Grosse for reporting this bug. 
+  //// The errors were so small that the values from the worked example of 21.b from 
+  //// the book ended up giving the same results. If a longer timespan was used for the 
+  //// example instead of the 28 years then the errors would have been easier to spot with the incorrect terms.
+
 
   double phi = (2004.3109 - 0.8533*T - 0.000217*Tsquared)*t -  (0.42665 + 0.000217*T)*tsquared - 0.041833*tcubed;
   phi = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, phi));
@@ -367,7 +382,7 @@ double JD = as<double>(JD_);
 
   double eta = (47.0029 - 0.06603*T + 0.000598*Tsquared)*t + (-0.03302 + 0.000598*T)*tsquared + 0.00006*tcubed;
   eta = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, eta));
-
+  
   double pi = 174.876384*3600 + 3289.4789*T + 0.60622*Tsquared - (869.8089 + 0.50491*T)*t + 0.03536*tsquared;
   pi = CAACoordinateTransformation::DegreesToRadians(CAACoordinateTransformation::DMSToDegrees(0, 0, pi));
 

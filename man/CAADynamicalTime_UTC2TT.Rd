@@ -1,13 +1,13 @@
-\name{CAADynamicalTime_DeltaT}
-\alias{CAADynamicalTime_DeltaT}
+\name{CAADynamicalTime_UTC2TT}
+\alias{CAADynamicalTime_UTC2TT}
 \title{
-Computing DeltaT
+UTC to TT
 }
 \description{
-Computing Delta T
+UTC to TT
 }
 \usage{
-CAADynamicalTime_DeltaT(JD)
+CAADynamicalTime_UTC2TT(JD)
 }
 
 \arguments{
@@ -16,10 +16,10 @@ Julian Date
 }
 }
 \details{
-see source code of AAplus 1.60.
+see the source code of AAplus 1.60
 }
 \value{
-DeltaT
+JD
 }
 \references{
 \url{http://www.naughter.com/aa.html}
@@ -27,12 +27,16 @@ DeltaT
 \author{
  C++ code by PJ Naughter, imported to R by Jinlong Zhang
 }
+\note{
+
+}
+
 
 \seealso{
 
 }
 \examples{
-CAADynamicalTime_DeltaT(JD = 2456655.5)
+CAADynamicalTime_UTC2TT(JD = 2456655.5)
 }
 
 \keyword{ time }

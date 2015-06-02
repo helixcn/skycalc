@@ -35,8 +35,22 @@ History: PJN / 01-02-2005 1. Fixed a problem with the declaration of the variabl
          PJN / 13-10-2012 1. Fixed a typo in the spelling of Coefficient throughout the AADynamicalTime.cpp module
          PJN / 04-08-2013 1. Updated the observed DeltaT values from http://maia.usno.navy.mil/ser7/deltat.data to 1st April 2013
                           2. Updated the predicted DeltaT values from http://maia.usno.navy.mil/ser7/deltat.preds to 1st January 2023
-
-Copyright (c) 2003 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+         PJN / 28-10-2013 1. Addition of a TT2UTC method which converts from TT to UTC.
+                          2. Addition of a UTC2TT method which converts from UTC to TT.
+                          3. Addition of a TT2TAI method which converts from TT to TAI.
+                          4. Addition of a TAI2TT method which converts from TAI to TT.
+                          5. Addition of a TT2UT1 method which converts from TT to UT1.
+                          6. Addition of a UT12TT method which converts from UT1 to TT.
+                          7. Updated the observed DeltaT values from http://maia.usno.navy.mil/ser7/deltat.data to 1st September 2013
+                          8. Addition of a UT1MinusUTC method which returns UT1 - UTC.
+         PJN / 12-11-2014 1. Updated the observed DeltaT values from http://maia.usno.navy.mil/ser7/deltat.data to 1st October 2014
+                          2. Updated the predicted DeltaT values from http://maia.usno.navy.mil/ser7/deltat.preds to 1st January 2024
+         PJN / 15-02-2015 1. Updated copyright details.
+                          2. Updated the observed DeltaT values from http://maia.usno.navy.mil/ser7/deltat.data to 1st January 2015
+                          3. Updated the predicted DeltaT values from http://maia.usno.navy.mil/ser7/deltat.preds to 1st January 2024
+                          4. Updated the CumulativeLeapSeconds table from http://maia.usno.navy.mil/ser7/tai-utc.dat to 1st July 2015
+  
+Copyright (c) 2003 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -59,8 +73,8 @@ to maintain a single distribution point for the source code.
 #include <cassert>
 #include <cstddef>
 #include <Rcpp.h>
-using namespace Rcpp;
 using namespace std;
+using namespace Rcpp;
 
 
 ////////////////////////////////// Macros / Defines ///////////////////////////
@@ -73,7 +87,7 @@ struct DeltaTValue
 
 const DeltaTValue g_DeltaTValues[] = 
 {
-//All the initial values are observed values from 1 February 1973 to 1 April 2013 as taken from http://maia.usno.navy.mil/ser7/deltat.data 
+//All the initial values are observed values from 1 February 1973 to 1 October 2014 as taken from http://maia.usno.navy.mil/ser7/deltat.data 
   { 2441714.5,	43.4724 },
   { 2441742.5,	43.5648 },
   { 2441773.5,	43.6737 },
@@ -557,48 +571,48 @@ const DeltaTValue g_DeltaTValues[] =
   { 2456324.5,  66.9443 }, //1 Februrary 2013
   { 2456352.5,  66.9763 }, //1 March 2013
   { 2456383.5,  67.0258 }, //1 April 2013
+  { 2456413.5,  67.0716 }, //1 May 2013
+  { 2456444.5,  67.1100 }, //1 June 2013
+  { 2456474.5,  67.1266 }, //1 July 2013
+  { 2456505.5,  67.1331 }, //1 August 2013
+  { 2456536.5,  67.1458 }, //1 September 2013
+  { 2456566.5,  67.1717 }, //1 October 2013
+  { 2456597.5,  67.2091 }, //1 November 2013
+  { 2456627.5,  67.2460 }, //1 December 2013
+  { 2456658.5,  67.2810 }, //1 January 2014
+  { 2456689.5,  67.3136 }, //1 February 2014
+  { 2456717.5,  67.3457 }, //1 March 2014
+  { 2456748.5,  67.3890 }, //1 April 2014
+  { 2456778.5,  67.4318 }, //1 May 2014
+  { 2456809.5,  67.4666 }, //1 June 2014
+  { 2456839.5,  67.4858 }, //1 July 2014
+  { 2456870.5,  67.4989 }, //1 August 2014
+  { 2456901.5,  67.5111 }, //1 September 2014
+  { 2456931.5,  67.5353 }, //1 October 2014
+  { 2456962.5,  67.5711 }, //1 November 2014
+  { 2456992.5,  67.6070 }, //1 December 2014
+  { 2457023.5,  67.6439 }, //1 January 2015
 
-//All these final values are predicted values from Year 2013.50 to Year 2023.0 are taken from http://maia.usno.navy.mil/ser7/deltat.preds
-  { 2456476.0,  67.121 }, //2013.5
-  { 2456567.25, 67.158 }, //2013.75
-  { 2456658.5,  67.267 }, //2014.0
-  { 2456749.75, 67.379 }, //2014.25
-  { 2456841.0,  67.7   }, //2014.5
-  { 2456932.25, 67.8   }, //2014.75
-  { 2457023.5,  67.9   }, //2015.0
-  { 2457114.75, 68.0   }, //2015.25
-  { 2457206.00, 68.1   }, //2015.5
-  { 2457297.25, 68.3   }, //2015.75
-  { 2457388.50, 68.4   }, //2016.0
-  { 2457480.00, 68.5   }, //2016.25
-  { 2457571.50, 69     }, //2016.5
-  { 2457663.00, 69     }, //2016.75
-  { 2457754.50, 69     }, //2017.0
-  { 2457845.75, 69     }, //2017.25
-  { 2457937.00, 69     }, //2017.5
-  { 2458028.25, 69     }, //2017.75
-  { 2458119.50, 69     }, //2018.0
-  { 2458210.75, 69     }, //2018.25
-  { 2458302.00, 70     }, //2018.5
-  { 2458393.25, 70     }, //2018.75
-  { 2458484.50, 70     }, //2019.0
-  { 2458575.75, 70     }, //2019.25
-  { 2458667.00, 70     }, //2019.5
-  { 2458758.25, 70     }, //2019.75
-  { 2458849.50, 70     }, //2020.0
-  { 2458941.00, 70     }, //2020.25
-  { 2459032.50, 71     }, //2020.5
-  { 2459124.00, 71     }, //2020.75
-  { 2459215.50, 71     }, //2021.0
-  { 2459306.75, 71     }, //2021.25
-  { 2459398.00, 71     }, //2021.5
-  { 2459489.25, 71     }, //2021.75
-  { 2459580.50, 71     }, //2022.0
-  { 2459671.75, 71     }, //2022.25
-  { 2459763.00, 71     }, //2022.5
-  { 2459854.25, 72     }, //2022.75
-  { 2459945.50, 72     }, //2023.0
- //Note as currently coded there is a single discontinuity of c. 1.28 seconds on 1 January 2023. At this point http://maia.usno.navy.mil/ser7/deltat.preds indicates an error value for DeltaT of about 5 seconds anyway.
+//All these final values are predicted values from Year 2015.25 to Year 2024.0 are taken from http://maia.usno.navy.mil/ser7/deltat.preds
+  { 2457114.75, 67.9    }, //2015.25
+  { 2457206.00, 68.0    }, //2015.5
+  { 2457297.25, 68.2    }, //2015.75
+  { 2457388.50, 68.3    }, //2016.0
+  { 2457480.00, 68.4    }, //2016.25
+  { 2457571.50, 68.5    }, //2016.5
+  { 2457663.00, 68.6    }, //2016.75
+  { 2457754.50, 68.7    }, //2017.0
+  { 2457845.75, 68.9    }, //2017.25
+  { 2457937.00, 69      }, //2017.5
+  { 2458210.75, 69      }, //2018.25
+  { 2458302.00, 70      }, //2018.5
+  { 2459032.50, 70      }, //2020.5
+  { 2459124.00, 71      }, //2020.75
+  { 2459763.00, 71      }, //2022.5
+  { 2459854.25, 72      }, //2022.75
+  { 2460310.50, 72      }, //2024.0
+
+//Note as currently coded there is a single discontinuity of c. 1.87 seconds on 1 January 2024. At this point http://maia.usno.navy.mil/ser7/deltat.preds indicates an error value for DeltaT of about 5 seconds anyway.
 };
 
 struct LeapSecondCoefficient
@@ -609,7 +623,7 @@ struct LeapSecondCoefficient
   double Coefficient;
 };
 
-const LeapSecondCoefficient g_LeapSecondCoefficients[] = //Cumulative leap second values from 1 Jan 1961 to 1 July 2012 as taken from http://maia.usno.navy.mil/ser7/tai-utc.dat
+const LeapSecondCoefficient g_LeapSecondCoefficients[] = //Cumulative leap second values from 1 Jan 1961 to 1 July 2015 as taken from http://maia.usno.navy.mil/ser7/tai-utc.dat
 {
   { 2437300.5, 1.4228180, 37300, 0.001296  },
   { 2437512.5, 1.3728180, 37300, 0.001296  },
@@ -649,7 +663,8 @@ const LeapSecondCoefficient g_LeapSecondCoefficients[] = //Cumulative leap secon
   { 2451179.5, 32.0,      41317, 0.0       }, 
   { 2453736.5, 33.0,      41317, 0.0       }, 
   { 2454832.5, 34.0,      41317, 0.0       }, 
-  { 2456109.5, 35.0,      41317, 0.0       } 
+  { 2456109.5, 35.0,      41317, 0.0       },
+  { 2457204.5, 36.0,      41317, 0.0       }
 };  
 
 
@@ -844,14 +859,62 @@ double CAADynamicalTime::CumulativeLeapSeconds(double JD)
   return LeapSeconds;
 }
 
-/*###################################################################################################*/
-/*###################################################################################################*/
-/*###################################################################################################*/
-/*###################################################################################################*/
-
-RcppExport SEXP CAADynamicalTime_DeltaT( SEXP JD_)
+double CAADynamicalTime::TT2UTC(double JD)
 {
-  double JD = as<double>(JD_); 
+  double DT = DeltaT(JD);
+  double UT1 = JD - (DT / 86400.0);
+  double LeapSeconds = CumulativeLeapSeconds(JD); 
+  return ((DT - LeapSeconds - 32.184) / 86400.0) + UT1;
+}
+
+double CAADynamicalTime::UTC2TT(double JD)
+{
+  double DT = DeltaT(JD);
+  double LeapSeconds = CumulativeLeapSeconds(JD); 
+  double UT1 = JD - ((DT - LeapSeconds - 32.184) / 86400.0);
+  return UT1 + (DT / 86400.0);
+}
+
+double CAADynamicalTime::TT2TAI(double JD)
+{
+  return JD - (32.184 / 86400.0);
+}
+
+double CAADynamicalTime::TAI2TT(double JD)
+{
+  return JD + (32.184 / 86400.0);
+}
+
+double CAADynamicalTime::TT2UT1(double JD)
+{
+  return JD - (DeltaT(JD) / 86400.0);
+}
+
+double CAADynamicalTime::UT12TT(double JD)
+{
+  return JD + (DeltaT(JD) / 86400.0);
+}
+
+double CAADynamicalTime::UT1MinusUTC(double JD)
+{
+  double JDUTC = JD + ((CAADynamicalTime::DeltaT(JD) - CumulativeLeapSeconds(JD) - 32.184) / 86400);
+  return (JD - JDUTC) * 86400;
+}
+
+// ########################################################################################
+// ########################################################################################
+// ########################################################################################
+// ########################################################################################
+////////////////////////////////// Implementation in R ////////////////////////////////////
+// ########################################################################################
+// ########################################################################################
+// ########################################################################################
+// ########################################################################################
+// ########################################################################################
+
+RcppExport SEXP CAADynamicalTime_DeltaT(SEXP JD_)
+{
+    double JD = as<double>(JD_);
   //What will be the return value from the method
   double Delta = 0;
 
@@ -1007,8 +1070,8 @@ RcppExport SEXP CAADynamicalTime_DeltaT( SEXP JD_)
 }
 
 RcppExport SEXP CAADynamicalTime_CumulativeLeapSeconds(SEXP JD_)
-{ 
-  double JD = as<double>(JD_); 
+{
+    double JD = as<double>(JD_);
   //What will be the return value from the method
   double LeapSeconds = 0;
  
@@ -1038,4 +1101,53 @@ RcppExport SEXP CAADynamicalTime_CumulativeLeapSeconds(SEXP JD_)
   }
 
   return wrap(LeapSeconds);
+}
+
+RcppExport SEXP CAADynamicalTime_TT2UTC(SEXP JD_)
+{
+    double JD = as<double>(JD_);
+  double DT = CAADynamicalTime::DeltaT(JD);
+  double UT1 = JD - (DT / 86400.0);
+  double LeapSeconds = CAADynamicalTime::CumulativeLeapSeconds(JD); 
+  return wrap(((DT - LeapSeconds - 32.184) / 86400.0) + UT1);
+}
+
+RcppExport SEXP CAADynamicalTime_UTC2TT(SEXP JD_)
+{
+    double JD = as<double>(JD_);
+  double DT = CAADynamicalTime::DeltaT(JD);
+  double LeapSeconds = CAADynamicalTime::CumulativeLeapSeconds(JD); 
+  double UT1 = JD - ((DT - LeapSeconds - 32.184) / 86400.0);
+  return wrap(UT1 + (DT / 86400.0));
+}
+
+RcppExport SEXP CAADynamicalTime_TT2TAI(SEXP JD_)
+{
+    double JD = as<double>(JD_);
+  return wrap(JD - (32.184 / 86400.0));
+}
+
+RcppExport SEXP CAADynamicalTime_TAI2TT(SEXP JD_)
+{
+  double JD = as<double>(JD_);
+  return wrap(JD + (32.184 / 86400.0));
+}
+
+RcppExport SEXP CAADynamicalTime_TT2UT1(SEXP JD_)
+{
+  double JD = as<double>(JD_);
+  return wrap(JD - (CAADynamicalTime::DeltaT(JD) / 86400.0));
+}
+
+RcppExport SEXP CAADynamicalTime_UT12TT(SEXP JD_)
+{
+    double JD = as<double>(JD_);
+    return wrap(JD + (CAADynamicalTime::DeltaT(JD) / 86400.0));
+}
+
+RcppExport SEXP CAADynamicalTime_UT1MinusUTC(SEXP JD_)
+{
+    double JD = as<double>(JD_);
+    double JDUTC = JD + ((CAADynamicalTime::DeltaT(JD) - CAADynamicalTime::CumulativeLeapSeconds(JD) - 32.184) / 86400);
+    return wrap((JD - JDUTC) * 86400);
 }

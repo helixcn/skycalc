@@ -1,36 +1,47 @@
 \name{CAADynamicalTime_CumulativeLeapSeconds}
 \alias{CAADynamicalTime_CumulativeLeapSeconds}
+
 \title{
-CAADynamicalTime_CumulativeLeapSeconds
+Compute Cumulative Leap Seconds
 }
 \description{
-CAADynamicalTime_CumulativeLeapSeconds
+Compute Cumulative Leap Seconds
 }
 \usage{
 CAADynamicalTime_CumulativeLeapSeconds(JD)
 }
+
 \arguments{
-  \item{JD}{ The date in Dynamical time to calculate for.
-date The Julian day to calculate Cumulative leap seconds for. Because Leap seconds change so slowly, the time used can be in the TT, the UTC or UT1 timeframes although technically leap seconds are only relevant to the UTC timescale. 
+  \item{JD}{
+Julian Date
 }
 }
 \details{
+See AAplus source code 1.60
 }
 \value{
-The cumulative total of Leap seconds which have been applied to this point in seconds of time.
+the cumulative leap seconds
 }
-\references{ 
- Meeus, J. H. (1991). Astronomical algorithms. Willmann-Bell, Incorporated. 
+\references{
+    \url{http://www.naughter.com/aa.html}
 }
-\author{  C++ code by PJ Naughter, imported to R by Jinlong Zhang
+\author{
+ C++ code by PJ Naughter, imported to R by Jinlong Zhang
 }
 \note{
+ This is a new function for AAplus v1.55 
 }
+
+
 \seealso{
+    \code{\link{CAADynamicalTime_DeltaT}}
+}
+
+\examples{
+
+CAADynamicalTime_CumulativeLeapSeconds(JD = 2456655.5)
 
 }
-\examples{
-CAADynamicalTime_CumulativeLeapSeconds(JD = 2456655.5)
-}
-\keyword{ Time }
+
+\keyword{ time }
 

@@ -1,13 +1,14 @@
-\name{CAADynamicalTime_DeltaT}
-\alias{CAADynamicalTime_DeltaT}
+\name{CAADynamicalTime_TT2TAI}
+\alias{CAADynamicalTime_TT2TAI}
+
 \title{
-Computing DeltaT
+Convert TT to TAI
 }
 \description{
-Computing Delta T
+Convert TT to TAI
 }
 \usage{
-CAADynamicalTime_DeltaT(JD)
+CAADynamicalTime_TT2TAI(JD)
 }
 
 \arguments{
@@ -19,7 +20,7 @@ Julian Date
 see source code of AAplus 1.60.
 }
 \value{
-DeltaT
+TAI
 }
 \references{
 \url{http://www.naughter.com/aa.html}
@@ -32,7 +33,7 @@ DeltaT
 
 }
 \examples{
-CAADynamicalTime_DeltaT(JD = 2456655.5)
+CAADynamicalTime_TT2TAI(JD = 2456655.5)
 }
 
 \keyword{ time }

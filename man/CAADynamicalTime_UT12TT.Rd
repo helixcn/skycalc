@@ -1,13 +1,14 @@
-\name{CAADynamicalTime_DeltaT}
-\alias{CAADynamicalTime_DeltaT}
+\name{CAADynamicalTime_UT12TT}
+\alias{CAADynamicalTime_UT12TT}
+
 \title{
-Computing DeltaT
+UT1 to TT
 }
 \description{
-Computing Delta T
+UT1 to TT
 }
 \usage{
-CAADynamicalTime_DeltaT(JD)
+CAADynamicalTime_UT12TT(JD)
 }
 
 \arguments{
@@ -19,7 +20,7 @@ Julian Date
 see source code of AAplus 1.60.
 }
 \value{
-DeltaT
+TT
 }
 \references{
 \url{http://www.naughter.com/aa.html}
@@ -32,7 +33,7 @@ DeltaT
 
 }
 \examples{
-CAADynamicalTime_DeltaT(JD = 2456655.5)
+CAADynamicalTime_UT12TT(JD = 2456655.5)
 }
 
 \keyword{ time }
