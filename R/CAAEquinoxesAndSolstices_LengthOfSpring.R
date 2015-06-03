@@ -1,4 +1,2 @@
 CAAEquinoxesAndSolstices_LengthOfSpring <-
-function(Year){
-.Call("CAAEquinoxesAndSolstices_LengthOfSpring", Year)
-}
+function(Year, bNorthernHemisphere = TRUE){.Call("CAAEquinoxesAndSolstices_LengthOfSpring", Year, bNorthernHemisphere  ) }

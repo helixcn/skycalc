@@ -488,14 +488,7 @@ double CAAElliptical::MinorPlanetMagnitude(double H, double delta, double G, dou
 
 
 //// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
-//// ########################################################
+//// #################Implementation in R ###################
 //// ########################################################
 
 RcppExport SEXP CAAElliptical_DistanceToLightTime(SEXP Distance_)
@@ -509,7 +502,7 @@ RcppExport SEXP CAAElliptical_Calculate_Sun(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::SUN);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -523,7 +516,7 @@ RcppExport SEXP CAAElliptical_Calculate_Mercury(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::MERCURY);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -537,7 +530,7 @@ RcppExport SEXP CAAElliptical_Calculate_Venus(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::VENUS);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -552,7 +545,7 @@ RcppExport SEXP CAAElliptical_Calculate_Mars(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::MARS);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -566,7 +559,7 @@ RcppExport SEXP CAAElliptical_Calculate_Jupiter(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::JUPITER);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -580,7 +573,7 @@ RcppExport SEXP CAAElliptical_Calculate_Saturn(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::SATURN);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -594,7 +587,7 @@ RcppExport SEXP CAAElliptical_Calculate_Uranus(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::URANUS);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -608,7 +601,7 @@ RcppExport SEXP CAAElliptical_Calculate_Neptune(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::NEPTUNE);
-    return(List::create(Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -622,7 +615,7 @@ RcppExport SEXP CAAElliptical_Calculate_Pluto(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::PLUTO);
-    return(List::create(Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -789,55 +782,55 @@ RcppExport SEXP CAAElliptical_Calculate(SEXP JD_,
 
 RcppExport SEXP CAAElliptical_InstantaneousVelocity(SEXP r_, SEXP a_)
 {
-  double r  = as<double>(r_);
-  double a  = as<double>(a_);
-  return wrap(42.1219 * sqrt((1/r) - (1/(2*a))));
+    double r  = as<double>(r_);
+    double a  = as<double>(a_);
+    return wrap(42.1219 * sqrt((1/r) - (1/(2*a))));
 }
 
 RcppExport SEXP CAAElliptical_VelocityAtPerihelion(SEXP e_, SEXP a_)
 {
-  double e = as<double>(e_);
-  double a = as<double>(a_);
-  return wrap(29.7847 / sqrt(a) * sqrt((1+e)/(1-e)));
+    double e = as<double>(e_);
+    double a = as<double>(a_);
+    return wrap(29.7847 / sqrt(a) * sqrt((1+e)/(1-e)));
 }
 
 RcppExport SEXP CAAElliptical_VelocityAtAphelion(SEXP e_, SEXP a_)
 { 
-  double e = as<double>(e_);
-  double a = as<double>(a_);
-  return wrap(29.7847 / sqrt(a) * sqrt((1-e)/(1+e)));
+    double e = as<double>(e_);
+    double a = as<double>(a_);
+    return wrap(29.7847 / sqrt(a) * sqrt((1-e)/(1+e)));
 }
 
 RcppExport SEXP CAAElliptical_LengthOfEllipse(SEXP e_, SEXP a_)
 {
-  double e = as<double>(e_);
-  double a = as<double>(a_);
-  double b = a * sqrt(1 - e*e);
-  return wrap(3.1415926535897932384626433832795 * (3 * (a+b) - sqrt((a+3*b)*(3*a + b))));
+    double e = as<double>(e_);
+    double a = as<double>(a_);
+    double b = a * sqrt(1 - e*e);
+    return wrap(3.1415926535897932384626433832795 * (3 * (a+b) - sqrt((a+3*b)*(3*a + b))));
 }
 
 RcppExport SEXP CAAElliptical_CometMagnitude(SEXP g_, SEXP delta_, SEXP k_, SEXP r_)
 { 
-double g     = as<double>(g_);
-double delta = as<double>(delta_);
-double k     = as<double>(k_);
-double r     = as<double>(r_);
-  return wrap(g + 5*log10(delta) + k*log10(r));
+    double g     = as<double>(g_);
+    double delta = as<double>(delta_);
+    double k     = as<double>(k_);
+    double r     = as<double>(r_);
+    return wrap(g + 5*log10(delta) + k*log10(r));
 }
 
 RcppExport SEXP CAAElliptical_MinorPlanetMagnitude(SEXP H_, SEXP delta_, SEXP G_, SEXP r_, SEXP PhaseAngle_)
 { 
-  double H          = as<double>(H_          );
-  double delta      = as<double>(delta_      );
-  double G          = as<double>(G_          );
-  double r          = as<double>(r_          );
-  double PhaseAngle = as<double>(PhaseAngle_ );
+    double H          = as<double>(H_          );
+    double delta      = as<double>(delta_      );
+    double G          = as<double>(G_          );
+    double r          = as<double>(r_          );
+    double PhaseAngle = as<double>(PhaseAngle_ );
   
-  //Convert from degrees to radians
-  PhaseAngle = CAACoordinateTransformation::DegreesToRadians(PhaseAngle);
+    //Convert from degrees to radians
+    PhaseAngle = CAACoordinateTransformation::DegreesToRadians(PhaseAngle);
 
-  double phi1 = exp(-3.33*pow(tan(PhaseAngle/2), 0.63));
-  double phi2 = exp(-1.87*pow(tan(PhaseAngle/2), 1.22));
+    double phi1 = exp(-3.33*pow(tan(PhaseAngle/2), 0.63));
+    double phi2 = exp(-1.87*pow(tan(PhaseAngle/2), 1.22));
 
-  return wrap(H + 5*log10(r*delta) - 2.5*log10((1 - G)*phi1 + G*phi2));
+    return wrap(H + 5*log10(r*delta) - 2.5*log10((1 - G)*phi1 + G*phi2));
 }

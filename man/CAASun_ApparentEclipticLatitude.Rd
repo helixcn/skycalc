@@ -28,8 +28,8 @@ the apparent ecliptic latitude in degrees referred to the mean dynamical eclipti
 \seealso{
 }
 \examples{
-JD = 2456597.5
-CAASun_ApparentEclipticLatitude(JD)
+    JD = 2456597.5
+    CAASun_ApparentEclipticLatitude(JD)
 }
 \keyword{ Sun }
 

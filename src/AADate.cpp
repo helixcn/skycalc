@@ -141,7 +141,7 @@ void CAADate::Set(long Year, long Month, double Day, double Hour, double Minute,
 void CAADate::Get(long& Year, long& Month, long& Day, long& Hour, long& Minute, double& Second) const
 {
   double JD = m_dblJulian + 0.5;
-  double tempZ; 
+  double tempZ = 0; 
   double F = modf(JD, &tempZ);
   long Z = static_cast<long>(tempZ);
   long A;

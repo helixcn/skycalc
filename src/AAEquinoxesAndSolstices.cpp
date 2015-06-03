@@ -2,9 +2,28 @@
 Module : AAEQUINOXESANDSOLTICES.CPP
 Purpose: Implementation for the algorithms to calculate the dates of the Equinoxes and Solstices
 Created: PJN / 29-12-2003
-History: None
+History: PJN / 28-10-2013 1. Renamed the method SpringEquinox to NorthwardEquinox to avoid the northern hemisphere
+                          bias in the name. Thanks to Marius Gleeson for prompting this update.
+                          2. Renamed the method AutumnEquinox to SouthwardEquinox to avoid the northern hemisphere
+                          bias in the name. Thanks to Marius Gleeson for prompting this update.
+                          3. Renamed the method SummerSolstice to NorthernSolstice to avoid the northern hemisphere
+                          bias in the name. Thanks to Marius Gleeson for prompting this update.
+                          4. Renamed the method WinterSolstice to SouthernSolstice to avoid the northern hemisphere
+                          bias in the name. Thanks to Marius Gleeson for prompting this update.
+                          5. The method LengthOfSpring now takes a boolean to indicate which hemisphere the observer
+                          is located it as previously the code assumed a northern hemisphere bias. Thanks to Marius 
+                          Gleeson for prompting this update.
+                          6. The method LengthOfSummer now takes a boolean to indicate which hemisphere the observer
+                          is located it as previously the code assumed a northern hemisphere bias. Thanks to Marius 
+                          Gleeson for prompting this update.
+                          7. The method LengthOfAutumn now takes a boolean to indicate which hemisphere the observer
+                          is located it as previously the code assumed a northern hemisphere bias. Thanks to Marius 
+                          Gleeson for prompting this update.
+                          8. The method LengthOfWinter now takes a boolean to indicate which hemisphere the observer
+                          is located it as previously the code assumed a northern hemisphere bias. Thanks to Marius 
+                          Gleeson for prompting this update.
 
-Copyright (c) 2003 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 2003 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -33,7 +52,7 @@ using namespace std;
 
 //////////////////////////////// Implementation ///////////////////////////////
 
-double CAAEquinoxesAndSolstices::SpringEquinox(long Year)
+double CAAEquinoxesAndSolstices::NorthwardEquinox(long Year)
 {
   //calculate the approximate date
   double JDE;
@@ -66,7 +85,7 @@ double CAAEquinoxesAndSolstices::SpringEquinox(long Year)
   return JDE;
 }
 
-double CAAEquinoxesAndSolstices::SummerSolstice(long Year)
+double CAAEquinoxesAndSolstices::NorthernSolstice(long Year)
 {
   //calculate the approximate date
   double JDE;
@@ -99,7 +118,7 @@ double CAAEquinoxesAndSolstices::SummerSolstice(long Year)
   return JDE;
 }
 
-double CAAEquinoxesAndSolstices::AutumnEquinox(long Year)
+double CAAEquinoxesAndSolstices::SouthwardEquinox(long Year)
 {
   //calculate the approximate date
   double JDE;
@@ -132,7 +151,7 @@ double CAAEquinoxesAndSolstices::AutumnEquinox(long Year)
   return JDE;
 }
 
-double CAAEquinoxesAndSolstices::WinterSolstice(long Year)
+double CAAEquinoxesAndSolstices::SouthernSolstice(long Year)
 {
   //calculate the approximate date
   double JDE;
@@ -165,36 +184,53 @@ double CAAEquinoxesAndSolstices::WinterSolstice(long Year)
   return JDE;
 }
 
-double CAAEquinoxesAndSolstices::LengthOfSpring(long Year)
+double CAAEquinoxesAndSolstices::LengthOfSpring(long Year, bool bNorthernHemisphere)
 {
-  return SummerSolstice(Year) - SpringEquinox(Year);
+  if (bNorthernHemisphere)
+    return NorthernSolstice(Year) - NorthwardEquinox(Year);
+  else
+    return SouthernSolstice(Year) - SouthwardEquinox(Year);
 }
 
-double CAAEquinoxesAndSolstices::LengthOfSummer(long Year)
+double CAAEquinoxesAndSolstices::LengthOfSummer(long Year, bool bNorthernHemisphere)
 {
-  return AutumnEquinox(Year) - SummerSolstice(Year);
+  if (bNorthernHemisphere)
+    return SouthwardEquinox(Year) - NorthernSolstice(Year);
+  else
+  {
+    //The Summer season wraps around into the following year for the southern hemisphere
+    return NorthwardEquinox(Year+1) - SouthernSolstice(Year);
+  }  
 }
 
-double CAAEquinoxesAndSolstices::LengthOfAutumn(long Year)
+double CAAEquinoxesAndSolstices::LengthOfAutumn(long Year, bool bNorthernHemisphere)
 {
-  return WinterSolstice(Year) - AutumnEquinox(Year);
+  if (bNorthernHemisphere)
+    return SouthernSolstice(Year) - SouthwardEquinox(Year);
+  else
+    return NorthernSolstice(Year) - NorthwardEquinox(Year);
 }
 
-double CAAEquinoxesAndSolstices::LengthOfWinter(long Year)
+double CAAEquinoxesAndSolstices::LengthOfWinter(long Year, bool bNorthernHemisphere)
 {
-  //The winter season wraps around into the following Year
-  return SpringEquinox(Year+1) - WinterSolstice(Year);
+  if (bNorthernHemisphere)
+  {
+    //The Winter season wraps around into the following year for the nothern hemisphere
+    return NorthwardEquinox(Year+1) - SouthernSolstice(Year);
+  }
+  else
+    return SouthwardEquinox(Year) - NorthernSolstice(Year);
 }
 
-///// #########################################################################
-///// #########################################################################
-///// #########################################################################
-///// #########################################################################
+// ########################################################################
+// ########################################################################
+// ######### implementation in R ##########################################
+// ########################################################################
+// ########################################################################
 
-RcppExport SEXP CAAEquinoxesAndSolstices_SpringEquinox(SEXP Year_)
+RcppExport SEXP CAAEquinoxesAndSolstices_NorthwardEquinox(SEXP Year_)
 {
-  long Year = as<long>(Year_); 
-  
+  double Year = as<double>(Year_); 
   //calculate the approximate date
   double JDE;
   if (Year <= 1000)
@@ -226,9 +262,9 @@ RcppExport SEXP CAAEquinoxesAndSolstices_SpringEquinox(SEXP Year_)
   return wrap(JDE);
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_SummerSolstice(SEXP Year_)
-{ 
-  long Year = as<long>(Year_); 
+RcppExport SEXP CAAEquinoxesAndSolstices_NorthernSolstice(SEXP Year_)
+{
+  double Year = as<double>(Year_); 
   //calculate the approximate date
   double JDE;
   if (Year <= 1000)
@@ -260,9 +296,9 @@ RcppExport SEXP CAAEquinoxesAndSolstices_SummerSolstice(SEXP Year_)
   return wrap(JDE);
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_AutumnEquinox(SEXP Year_)
-{  
-  long Year = as<long>(Year_); 
+RcppExport SEXP CAAEquinoxesAndSolstices_SouthwardEquinox(SEXP Year_)
+{
+  double Year = as<double>(Year_); 
   //calculate the approximate date
   double JDE;
   if (Year <= 1000)
@@ -294,9 +330,9 @@ RcppExport SEXP CAAEquinoxesAndSolstices_AutumnEquinox(SEXP Year_)
   return wrap(JDE);
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_WinterSolstice(SEXP Year_)
-{ 
-  long Year = as<long>(Year_); 
+RcppExport SEXP CAAEquinoxesAndSolstices_SouthernSolstice(SEXP Year_)
+{
+  double Year = as<double>(Year_); 
   //calculate the approximate date
   double JDE;
   if (Year <= 1000)
@@ -328,27 +364,50 @@ RcppExport SEXP CAAEquinoxesAndSolstices_WinterSolstice(SEXP Year_)
   return wrap(JDE);
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfSpring(SEXP Year_)
+RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfSpring(SEXP Year_, SEXP bNorthernHemisphere_)
 {
-  long Year = as<long>(Year_); 
-  return wrap(CAAEquinoxesAndSolstices::SummerSolstice(Year) - CAAEquinoxesAndSolstices::SpringEquinox(Year));
+  double Year = as<double>(Year_); 
+  bool bNorthernHemisphere = Rcpp::as<bool>(bNorthernHemisphere_);
+  if (bNorthernHemisphere)
+    return wrap(CAAEquinoxesAndSolstices::NorthernSolstice(Year) - CAAEquinoxesAndSolstices::NorthwardEquinox(Year));
+  else
+    return wrap(CAAEquinoxesAndSolstices::SouthernSolstice(Year) - CAAEquinoxesAndSolstices::SouthwardEquinox(Year));
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfSummer(SEXP Year_)
+RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfSummer(SEXP Year_, SEXP bNorthernHemisphere_)
 {
-  long Year = as<long>(Year_); 
-  return wrap(CAAEquinoxesAndSolstices::AutumnEquinox(Year) - CAAEquinoxesAndSolstices::SummerSolstice(Year));
+  double Year = as<double>(Year_); 
+  bool bNorthernHemisphere = Rcpp::as<bool>(bNorthernHemisphere_);
+  if (bNorthernHemisphere)
+    return wrap(CAAEquinoxesAndSolstices::SouthwardEquinox(Year) - CAAEquinoxesAndSolstices::NorthernSolstice(Year));
+  else
+  {
+    //The Summer season wraps around into the following year for the southern hemisphere
+    return wrap(CAAEquinoxesAndSolstices::NorthwardEquinox(Year+1) - CAAEquinoxesAndSolstices::SouthernSolstice(Year));
+  }  
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfAutumn(SEXP Year_)
+RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfAutumn(SEXP Year_, SEXP bNorthernHemisphere_)
 {
-  long Year = as<long>(Year_); 
-  return wrap(CAAEquinoxesAndSolstices::WinterSolstice(Year) - CAAEquinoxesAndSolstices::AutumnEquinox(Year));
+  double Year = as<double>(Year_); 
+  bool bNorthernHemisphere = Rcpp::as<bool>(bNorthernHemisphere_);
+  if (bNorthernHemisphere)
+    return wrap(CAAEquinoxesAndSolstices::SouthernSolstice(Year) - CAAEquinoxesAndSolstices::SouthwardEquinox(Year));
+  else
+    return wrap(CAAEquinoxesAndSolstices::NorthernSolstice(Year) - CAAEquinoxesAndSolstices::NorthwardEquinox(Year));
 }
 
-RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfWinter(SEXP Year_)
-{ 
-  long Year = as<long>(Year_); 
-  //The winter season wraps around into the following Year
-  return wrap(CAAEquinoxesAndSolstices::SpringEquinox(Year+1) - CAAEquinoxesAndSolstices::WinterSolstice(Year));
+RcppExport SEXP CAAEquinoxesAndSolstices_LengthOfWinter(SEXP Year_, SEXP bNorthernHemisphere_)
+{
+  double Year = as<double>(Year_); 
+  bool bNorthernHemisphere = Rcpp::as<bool>(bNorthernHemisphere_);
+  if (bNorthernHemisphere)
+  {
+    //The Winter season wraps around into the following year for the nothern hemisphere
+    return wrap(CAAEquinoxesAndSolstices::NorthwardEquinox(Year+1) - CAAEquinoxesAndSolstices::SouthernSolstice(Year));
+  }
+  else
+    return wrap(CAAEquinoxesAndSolstices::SouthwardEquinox(Year) - CAAEquinoxesAndSolstices::NorthernSolstice(Year));
 }
+
+

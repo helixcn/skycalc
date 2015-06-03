@@ -1,35 +1,47 @@
 \name{CAAEquinoxesAndSolstices_LengthOfWinter}
 \alias{CAAEquinoxesAndSolstices_LengthOfWinter}
 \title{
-CAAEquinoxesAndSolstices_LengthOfWinter
+Length Of Winter
 }
 \description{
-CAAEquinoxesAndSolstices_LengthOfWinter
+Length Of Winter
 }
 \usage{
-CAAEquinoxesAndSolstices_LengthOfWinter(Year)
+CAAEquinoxesAndSolstices_LengthOfWinter(Year, bNorthernHemisphere = TRUE)
 }
+
 \arguments{
-  \item{Year}{ Year The year to calculate for.
+  \item{Year}{
+The year to calculate for.
+}
+  \item{bNorthernHemisphere}{
+logical, true to indicate the observer is in the northern hemisphere, while false means the southern hemisphere.
 }
 }
 \details{
+to be added.
 }
 \value{
-The length of the astronomical Winter season in days. 
+The length of the astronomical Winter season in days.
 }
-\references{ 
- Meeus, J. H. (1991). Astronomical algorithms. Willmann-Bell, Incorporated. 
+\references{
+    \url{http://www.naughter.com/aa.html}
 }
-\author{  C++ code by PJ Naughter, imported to R by Jinlong Zhang
+\author{
+ C++ code by PJ Naughter, imported to R by Jinlong Zhang
 }
 \note{
+
 }
+
 \seealso{
 
 }
 \examples{
-CAAEquinoxesAndSolstices_LengthOfWinter(Year = 2014)
+
+CAAEquinoxesAndSolstices_LengthOfWinter(Year = 2016, bNorthernHemisphere = TRUE)
+
 }
-\keyword{ Winter }
+
+\keyword{ season }
 

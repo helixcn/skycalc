@@ -3,7 +3,7 @@ Module : AAEQUINOXESANDSOLTICES.H
 Purpose: Implementation for the algorithms to calculate the dates of the Equinoxes and Solstices
 Created: PJN / 29-12-2003
 
-Copyright (c) 2003 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 2003 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -38,15 +38,15 @@ class AAPLUS_EXT_CLASS CAAEquinoxesAndSolstices
 {
 public:
 //Static methods
-  static double SpringEquinox(long Year);
-  static double SummerSolstice(long Year);
-  static double AutumnEquinox(long Year);
-  static double WinterSolstice(long Year);
+  static double NorthwardEquinox(long Year);
+  static double NorthernSolstice(long Year);
+  static double SouthwardEquinox(long Year);
+  static double SouthernSolstice(long Year);
 
-  static double LengthOfSpring(long Year);
-  static double LengthOfSummer(long Year);
-  static double LengthOfAutumn(long Year);
-  static double LengthOfWinter(long Year);
+  static double LengthOfSpring(long Year, bool bNorthernHemisphere = true);
+  static double LengthOfSummer(long Year, bool bNorthernHemisphere = true);
+  static double LengthOfAutumn(long Year, bool bNorthernHemisphere = true);
+  static double LengthOfWinter(long Year, bool bNorthernHemisphere = true);
 };
 
 #endif //__AAEQUINOXESANDSOLSTICES_H_
