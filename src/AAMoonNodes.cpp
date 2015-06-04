@@ -32,7 +32,6 @@ using namespace std;
 
 //////////////////////////// Implementation ///////////////////////////////////
 
-
 double CAAMoonNodes::K(double Year)
 {
   return 13.4223*(Year - 2000.05);

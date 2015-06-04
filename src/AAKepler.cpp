@@ -36,6 +36,8 @@ double CAAKepler::Calculate(double M, double e, int nIterations)
 { 
   //Convert from degrees to radians
   M = CAACoordinateTransformation::DegreesToRadians(M);
+///// if define PI once more, there will be a conflict, since Pi is already a global constant.
+///// that's why PI_ was defined here to avoild conflicts. Jinlong Zhang 
   double PI_ = 3.1415926535897932384626433832795;
 
   double F = 1;

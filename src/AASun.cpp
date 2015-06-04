@@ -293,6 +293,6 @@ RcppExport SEXP CAASun_EquatorialRectangularCoordinatesAnyEquinox(SEXP JD_, SEXP
   double JDEquinox = as<double>(JDEquinox_); 
   CAA3DCoordinate value = CAASun::EquatorialRectangularCoordinatesJ2000(JD);
   value = CAAFK5::ConvertVSOPToFK5AnyEquinox(value, JDEquinox);
-  List z = List::create(value.X,  value.Y,   value.Z ) ;
+  List z = List::create(value.X, value.Y, value.Z ) ;
   return z;
 }

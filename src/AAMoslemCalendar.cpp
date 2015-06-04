@@ -66,7 +66,7 @@ CAACalendarDate CAAMoslemCalendar::MoslemToJulian(long Year, long Month, long Da
 
   JulianDate.Year = X;
   CAADate::DayOfYearToDayAndMonth(J, CAADate::IsLeap(X, false), JulianDate.Day, JulianDate.Month);
- 
+
   return JulianDate;
 }
 
@@ -245,7 +245,7 @@ RcppExport SEXP CAAMoslemCalendar_JulianToMoslem(SEXP Year_, SEXP Month_, SEXP D
   }
 
   return List::create(Named("MoslemDate.Year") = MoslemDate.Year, 
-                       Named("MoslemDate.Month") = MoslemDate.Month, 
-                       Named("MoslemDate.Day") = MoslemDate.Day);
+                      Named("MoslemDate.Month") = MoslemDate.Month, 
+                      Named("MoslemDate.Day") = MoslemDate.Day);
 }
 

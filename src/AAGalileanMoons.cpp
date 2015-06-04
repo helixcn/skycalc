@@ -6,7 +6,7 @@ History: PJN / 08-05-2011 1. Fixed a bug in CAAGalileanMoons::CalculateHelper wh
                           the four satellites (Sigma1 to Sigma4) were not being converted to radians prior to some
                           trigonometric calculations. Thanks to Thomas Meyer for reporting this bug.
 
-Copyright (c) 2003 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 2003 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -129,6 +129,7 @@ CAAGalileanMoonsDetails CAAGalileanMoons::CalculateHelper(double JD, double sunl
   double Gdash = CAACoordinateTransformation::DegreesToRadians(31.97853 + 0.0334597339*t);
 
   //Calculate the longitude of the perihelion of Jupiter
+  // replaced the PI to PI_ since there is a conflict in definition. Jinlong Zhang
   double PI_ = CAACoordinateTransformation::DegreesToRadians(13.469942);
 
   //Calculate the periodic terms in the longitudes of the satellites
@@ -652,15 +653,13 @@ void CAAGalileanMoons::FillInPhenomenaDetails(CAAGalileanMoonDetail& detail)
   }
 }
 
-////////////////////////////////////////// ###############################
-//// #####################################################################
-////////////////////////////////////////// ###############################
-//// #####################################################################
-////////////////////////////////////////// ###############################
-//// #####################################################################
-////////////////////////////////////////// ###############################
-//// #####################################################################
 
+// ####################################################### 
+// ####################################################### 
+// ####################################################### 
+// ####################################################### 
+// ####################################################### 
+// ####################################################### 
 
 RcppExport SEXP CAAGalileanMoons_Calculate(SEXP JD_)
 {
@@ -733,67 +732,65 @@ RcppExport SEXP CAAGalileanMoons_Calculate(SEXP JD_)
   CAAGalileanMoons::FillInPhenomenaDetails(details2.Satellite4);
 
   //Finally transfer the required values from details2 to details1
-  details1.Satellite1.bInEclipse       = details2.Satellite1.bInOccultation;
-  details1.Satellite2.bInEclipse       = details2.Satellite2.bInOccultation;
-  details1.Satellite3.bInEclipse       = details2.Satellite3.bInOccultation;
-  details1.Satellite4.bInEclipse       = details2.Satellite4.bInOccultation;
+  details1.Satellite1.bInEclipse = details2.Satellite1.bInOccultation;
+  details1.Satellite2.bInEclipse = details2.Satellite2.bInOccultation;
+  details1.Satellite3.bInEclipse = details2.Satellite3.bInOccultation;
+  details1.Satellite4.bInEclipse = details2.Satellite4.bInOccultation;
   details1.Satellite1.bInShadowTransit = details2.Satellite1.bInTransit;
   details1.Satellite2.bInShadowTransit = details2.Satellite2.bInTransit;
   details1.Satellite3.bInShadowTransit = details2.Satellite3.bInTransit;
   details1.Satellite4.bInShadowTransit = details2.Satellite4.bInTransit;
-   
-  /*return List::create(Named("Satellite1.MeanLongitude")                   = details1.Satellite1.MeanLongitude,
-                       Named("Satellite1.TrueLongitude")                   = details1.Satellite1.TrueLongitude);*/
-   
-  return List::create(Named("Longitude") = List::create(Named("Satellite1.MeanLongitude")                   = details1.Satellite1.MeanLongitude,
-                                                          Named("Satellite1.TrueLongitude")                   = details1.Satellite1.TrueLongitude,
-                                                          Named("Satellite2.MeanLongitude")                   = details1.Satellite2.MeanLongitude,
-                                                          Named("Satellite2.TrueLongitude")                   = details1.Satellite2.TrueLongitude,
-                                                          Named("Satellite3.MeanLongitude")                   = details1.Satellite3.MeanLongitude,
-                                                          Named("Satellite3.TrueLongitude")                   = details1.Satellite3.TrueLongitude,
-                                                          Named("Satellite4.MeanLongitude")                   = details1.Satellite4.MeanLongitude,
-                                                          Named("Satellite4.TrueLongitude")                   = details1.Satellite4.TrueLongitude), 
+
+  return List::create(Named("Longitude") = List::create(Named("Satellite1.MeanLongitude")                                             = details1.Satellite1.MeanLongitude,
+                                                        Named("Satellite1.TrueLongitude")                                             = details1.Satellite1.TrueLongitude,
+                                                        Named("Satellite2.MeanLongitude")                                             = details1.Satellite2.MeanLongitude,
+                                                        Named("Satellite2.TrueLongitude")                                             = details1.Satellite2.TrueLongitude,
+                                                        Named("Satellite3.MeanLongitude")                                             = details1.Satellite3.MeanLongitude,
+                                                        Named("Satellite3.TrueLongitude")                                             = details1.Satellite3.TrueLongitude,
+                                                        Named("Satellite4.MeanLongitude")                                             = details1.Satellite4.MeanLongitude,
+                                                        Named("Satellite4.TrueLongitude")                                             = details1.Satellite4.TrueLongitude), 
                        
-                       Named("EquatorialLatitude") = List::create(Named("Satellite1.EquatorialLatitude")              = details1.Satellite1.EquatorialLatitude,
-                                                                   Named("Satellite2.EquatorialLatitude")              = details1.Satellite2.EquatorialLatitude,
-                                                                   Named("Satellite3.EquatorialLatitude")              = details1.Satellite3.EquatorialLatitude,
-                                                                   Named("Satellite4.EquatorialLatitude")              = details1.Satellite4.EquatorialLatitude),
-                       Named("r") = List::create(Named("Satellite1.r")                               = details1.Satellite1.r,
-                                                  Named("Satellite2.r")                               = details1.Satellite2.r,
-                                                  Named("Satellite3.r")                               = details1.Satellite3.r,
-                                                  Named("Satellite4.r")                               = details1.Satellite4.r),
-                       Named("TropicalLongitude") = List::create(Named("Satellite1.TropicalLongitude")               = details1.Satellite1.TropicalLongitude,
-                                                                  Named("Satellite2.TropicalLongitude")               = details1.Satellite2.TropicalLongitude,
-                                                                  Named("Satellite3.TropicalLongitude")               = details1.Satellite3.TropicalLongitude,
-                                                                  Named("Satellite4.TropicalLongitude")               = details1.Satellite4.TropicalLongitude),
-                       Named("TrueRectangularCoordinates") = List::create(Named("Satellite1.TrueRectangularCoordinates.X")    = details1.Satellite1.TrueRectangularCoordinates.X,
-                                                                           Named("Satellite1.TrueRectangularCoordinates.Y")    = details1.Satellite1.TrueRectangularCoordinates.Y,
-                                                                           Named("Satellite1.TrueRectangularCoordinates.Z")    = details1.Satellite1.TrueRectangularCoordinates.Z,
-                                                                           Named("Satellite2.TrueRectangularCoordinates.X")    = details1.Satellite2.TrueRectangularCoordinates.X,
-                                                                           Named("Satellite2.TrueRectangularCoordinates.Y")    = details1.Satellite2.TrueRectangularCoordinates.Y,
-                                                                           Named("Satellite2.TrueRectangularCoordinates.Z")    = details1.Satellite2.TrueRectangularCoordinates.Z,
-                                                                           Named("Satellite3.TrueRectangularCoordinates.X")    = details1.Satellite3.TrueRectangularCoordinates.X,
-                                                                           Named("Satellite4.TrueRectangularCoordinates.Y")    = details1.Satellite4.TrueRectangularCoordinates.Y,
-                                                                           Named("Satellite4.TrueRectangularCoordinates.Z")    = details1.Satellite4.TrueRectangularCoordinates.Z),
-                       Named("ApparentRectangularCoordinates") =List::create(Named("Satellite1.ApparentRectangularCoordinates.X")= details1.Satellite1.ApparentRectangularCoordinates.X,
-                                                                              Named("Satellite1.ApparentRectangularCoordinates.Y")= details1.Satellite1.ApparentRectangularCoordinates.Y,
-                                                                              Named("Satellite1.ApparentRectangularCoordinates.Z")= details1.Satellite1.ApparentRectangularCoordinates.Z,
-                                                                              Named("Satellite2.ApparentRectangularCoordinates.X")= details1.Satellite2.ApparentRectangularCoordinates.X,
-                                                                              Named("Satellite2.ApparentRectangularCoordinates.Y")= details1.Satellite2.ApparentRectangularCoordinates.Y,
-                                                                              Named("Satellite2.ApparentRectangularCoordinates.Z")= details1.Satellite2.ApparentRectangularCoordinates.Z,                                                       
-                                                                              Named("Satellite3.ApparentRectangularCoordinates.X")= details1.Satellite3.ApparentRectangularCoordinates.X,
-                                                                              Named("Satellite3.ApparentRectangularCoordinates.Y")= details1.Satellite3.ApparentRectangularCoordinates.Y,
-                                                                              Named("Satellite3.ApparentRectangularCoordinates.Z")= details1.Satellite3.ApparentRectangularCoordinates.Z,                                              
-                                                                              Named("Satellite4.ApparentRectangularCoordinates.X")= details1.Satellite4.ApparentRectangularCoordinates.X,
-                                                                              Named("Satellite4.ApparentRectangularCoordinates.Y")= details1.Satellite4.ApparentRectangularCoordinates.Y,
-                                                                              Named("Satellite4.ApparentRectangularCoordinates.Z")= details1.Satellite4.ApparentRectangularCoordinates.Z),
-                       Named("Eclipse") = List::create(Named("Satellite1.bInEclipse")                      = details1.Satellite1.bInEclipse        ,
-                                                        Named("Satellite2.bInEclipse")                      = details1.Satellite2.bInEclipse        ,
-                                                        Named("Satellite3.bInEclipse")                      = details1.Satellite3.bInEclipse        ,
-                                                        Named("Satellite4.bInEclipse")                      = details1.Satellite4.bInEclipse        ,
-                                                        Named("Satellite1.bInShadowTransit")                = details1.Satellite1.bInShadowTransit  ,
-                                                        Named("Satellite2.bInShadowTransit")                = details1.Satellite2.bInShadowTransit  ,
-                                                        Named("Satellite3.bInShadowTransit")                = details1.Satellite3.bInShadowTransit  ,
-                                                        Named("Satellite4.bInShadowTransit")                = details1.Satellite4.bInShadowTransit));
-                     
+                       Named("EquatorialLatitude") = List::create(Named("Satellite1.EquatorialLatitude")                              = details1.Satellite1.EquatorialLatitude,
+                                                                  Named("Satellite2.EquatorialLatitude")                              = details1.Satellite2.EquatorialLatitude,
+                                                                  Named("Satellite3.EquatorialLatitude")                              = details1.Satellite3.EquatorialLatitude,
+                                                                  Named("Satellite4.EquatorialLatitude")                              = details1.Satellite4.EquatorialLatitude),
+                       Named("r") = List::create(Named("Satellite1.r")                                                                = details1.Satellite1.r,
+                                                 Named("Satellite2.r")                                                                = details1.Satellite2.r,
+                                                 Named("Satellite3.r")                                                                = details1.Satellite3.r,
+                                                 Named("Satellite4.r")                                                                = details1.Satellite4.r),
+                       Named("TropicalLongitude") = List::create(Named("Satellite1.TropicalLongitude")                                = details1.Satellite1.TropicalLongitude,
+                                                                 Named("Satellite2.TropicalLongitude")                                = details1.Satellite2.TropicalLongitude,
+                                                                 Named("Satellite3.TropicalLongitude")                                = details1.Satellite3.TropicalLongitude,
+                                                                 Named("Satellite4.TropicalLongitude")                                = details1.Satellite4.TropicalLongitude),
+                       Named("TrueRectangularCoordinates") = List::create(Named("Satellite1.TrueRectangularCoordinates.X")            = details1.Satellite1.TrueRectangularCoordinates.X,
+                                                                          Named("Satellite1.TrueRectangularCoordinates.Y")            = details1.Satellite1.TrueRectangularCoordinates.Y,
+                                                                          Named("Satellite1.TrueRectangularCoordinates.Z")            = details1.Satellite1.TrueRectangularCoordinates.Z,
+                                                                          Named("Satellite2.TrueRectangularCoordinates.X")            = details1.Satellite2.TrueRectangularCoordinates.X,
+                                                                          Named("Satellite2.TrueRectangularCoordinates.Y")            = details1.Satellite2.TrueRectangularCoordinates.Y,
+                                                                          Named("Satellite2.TrueRectangularCoordinates.Z")            = details1.Satellite2.TrueRectangularCoordinates.Z,
+                                                                          Named("Satellite3.TrueRectangularCoordinates.X")            = details1.Satellite3.TrueRectangularCoordinates.X,
+                                                                          Named("Satellite4.TrueRectangularCoordinates.Y")            = details1.Satellite4.TrueRectangularCoordinates.Y,
+                                                                          Named("Satellite4.TrueRectangularCoordinates.Z")            = details1.Satellite4.TrueRectangularCoordinates.Z),
+                       Named("ApparentRectangularCoordinates") =List::create(Named("Satellite1.ApparentRectangularCoordinates.X")     = details1.Satellite1.ApparentRectangularCoordinates.X,
+                                                                             Named("Satellite1.ApparentRectangularCoordinates.Y")     = details1.Satellite1.ApparentRectangularCoordinates.Y,
+                                                                             Named("Satellite1.ApparentRectangularCoordinates.Z")     = details1.Satellite1.ApparentRectangularCoordinates.Z,
+                                                                             Named("Satellite2.ApparentRectangularCoordinates.X")     = details1.Satellite2.ApparentRectangularCoordinates.X,
+                                                                             Named("Satellite2.ApparentRectangularCoordinates.Y")     = details1.Satellite2.ApparentRectangularCoordinates.Y,
+                                                                             Named("Satellite2.ApparentRectangularCoordinates.Z")     = details1.Satellite2.ApparentRectangularCoordinates.Z,                                                       
+                                                                             Named("Satellite3.ApparentRectangularCoordinates.X")     = details1.Satellite3.ApparentRectangularCoordinates.X,
+                                                                             Named("Satellite3.ApparentRectangularCoordinates.Y")     = details1.Satellite3.ApparentRectangularCoordinates.Y,
+                                                                             Named("Satellite3.ApparentRectangularCoordinates.Z")     = details1.Satellite3.ApparentRectangularCoordinates.Z,                                              
+                                                                             Named("Satellite4.ApparentRectangularCoordinates.X")     = details1.Satellite4.ApparentRectangularCoordinates.X,
+                                                                             Named("Satellite4.ApparentRectangularCoordinates.Y")     = details1.Satellite4.ApparentRectangularCoordinates.Y,
+                                                                             Named("Satellite4.ApparentRectangularCoordinates.Z")     = details1.Satellite4.ApparentRectangularCoordinates.Z),
+                       Named("Eclipse") = List::create(Named("Satellite1.bInEclipse")                                                 = details1.Satellite1.bInEclipse        ,
+                                                       Named("Satellite2.bInEclipse")                                                 = details1.Satellite2.bInEclipse        ,
+                                                       Named("Satellite3.bInEclipse")                                                 = details1.Satellite3.bInEclipse        ,
+                                                       Named("Satellite4.bInEclipse")                                                 = details1.Satellite4.bInEclipse        ,
+                                                       Named("Satellite1.bInShadowTransit")                                           = details1.Satellite1.bInShadowTransit  ,
+                                                       Named("Satellite2.bInShadowTransit")                                           = details1.Satellite2.bInShadowTransit  ,
+                                                       Named("Satellite3.bInShadowTransit")                                           = details1.Satellite3.bInShadowTransit  ,
+                                                       Named("Satellite4.bInShadowTransit")                                           = details1.Satellite4.bInShadowTransit));
+
 }
+

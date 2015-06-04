@@ -29,6 +29,7 @@ to maintain a single distribution point for the source code.
 using namespace Rcpp;
 using namespace std;
 
+
 //////////////////////////// Implementation ///////////////////////////////////
 
 double CAAMoonMaxDeclinations::K(double Year)

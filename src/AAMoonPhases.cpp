@@ -7,6 +7,8 @@ History: PJN / 22-02-2004 1. Fixed a bug in the calculation of the phase type fr
          PJN / 10-09-2011 1. Fixed a bug in the calculation of the "F" local variable which represents
                           the Moon's argument of latitude in the CAAMoonPhases::TruePhase method. 
                           Thanks to Andrew Hammond for reporting this bug.
+         PJN / 29-03-2015 1. Fixed up some variable initializations around the use of modf. Thanks to Arnaud Cueille for
+                          reporting this issue.
 
 Copyright (c) 2004 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
@@ -105,7 +107,7 @@ double CAAMoonPhases::TruePhase(double k)
   A14 = CAACoordinateTransformation::DegreesToRadians(A14);
 
   //convert to radians
-  double kint;
+  double kint = 0;
   double kfrac = modf(k, &kint);
   if (kfrac < 0)
     kfrac = 1 + kfrac;
@@ -306,7 +308,7 @@ RcppExport SEXP CAAMoonPhases_TruePhase(SEXP k_)
   A14 = CAACoordinateTransformation::DegreesToRadians(A14);
 
   //convert to radians
-  double kint;
+  double kint = 0;
   double kfrac = modf(k, &kint);
   if (kfrac < 0)
     kfrac = 1 + kfrac;

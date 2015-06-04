@@ -30,12 +30,6 @@ using namespace std;
 
 
 ///////////////////////////////// Implementation //////////////////////////////
-////   .Call("CAARefraction_RefractionFromTrue" , Altitude_ = 300,  Pressure_ = 998,  Temperature_ = 20)
-////  [1] -0.009349424
-////  > .Call("CAARefraction_RefractionFromApparent" , Altitude_ = 300,  Pressure_ = 998,  Temperature_ = 20)
-////  [1] -0.00917106
-
-
 
 CAA2DCoordinate CAAPrecession::AdjustPositionUsingUniformProperMotion(double t, double Alpha, double Delta, double PMAlpha, double PMDelta)
 {
