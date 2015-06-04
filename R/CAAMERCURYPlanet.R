@@ -1,4 +1,4 @@
-MERCURYPlanet <-
+CAAMERCURYPlanet <-
 function(Year){
 .Call("MERCURYPlanet", Year)
 }

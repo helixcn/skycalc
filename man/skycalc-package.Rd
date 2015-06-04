@@ -3,17 +3,17 @@
 \alias{skycalc}
 \docType{package}
 \title{
-Calculating the Sky Events based on AAplus AA+ v1.56
+Computational Astronomy in R based on PJ Naughter's AA+ library
 }
 \description{
-Implementation of Astronomical Algorithms by Jean Meeus based on AAplus
+skycalc is an R package: a wrapper for the AA+ library for implementing Jean Meeus' Astronomical Algorithms. AA+ was written in C++ by PJ Naughter. 
 }
 \details{
 \tabular{ll}{
 Package: \tab skycalc\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2014-1-1\cr
+Version: \tab 0.1.2\cr
+Date: \tab 2015-6-4\cr
 License: \tab GPL-2\cr
 }
 }
