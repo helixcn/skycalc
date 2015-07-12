@@ -1,14 +1,14 @@
 Package: skycalc
 Type: Package
 Title: Computational Astronomy in R based on PJ Naughter's AA+ library
-Version: 0.1.2
-Date: 2015-6-4
+Version: 1.61
+Date: 2015-7-12
 Authors@R: person("Jinlong", "Zhang", role = c("aut", "cre"),
 		     email = "jinlongzhang01@gmail.com")
 Author: Jinlong Zhang [aut, cre]
 Maintainer: Jinlong Zhang <jinlongzhang01@gmail.com>
-Description: This is an wrapper package for AA++ library. 
-             AA++ is an C++ library for Jeen Meeus' Astronomical Algorithms by PJ Naughter. 
+Description: This is an wrapper package for AA++ library v1.61. 
+             AA++ is a C++ library for Jeen Meeus' Astronomical Algorithms written by PJ Naughter. 
 License: GPL-2
 Depends: Rcpp (>= 0.10.5)
 LinkingTo: Rcpp

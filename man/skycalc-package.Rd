@@ -12,8 +12,8 @@ skycalc is an R package: a wrapper for the AA+ library for implementing Jean Mee
 \tabular{ll}{
 Package: \tab skycalc\cr
 Type: \tab Package\cr
-Version: \tab 0.1.2\cr
-Date: \tab 2015-6-4\cr
+Version: \tab 1.61\cr
+Date: \tab 2015-7-12\cr
 License: \tab GPL-2\cr
 }
 }

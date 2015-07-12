@@ -2,9 +2,18 @@
 Module : AASATURNRINGS.CPP
 Purpose: Implementation for the algorithms which calculate various parameters related to the Rings of Saturn
 Created: PJN / 08-01-2004
-History: None
+History: PJN / 05-07-2015 1. The U1 (Saturnicentric longitude of the Sun) and U2 (Saturnicentic longitude of the
+                          Earth) are now returned in CAASaturnRings::Calculate.
+                          2. Fixed a bug in the calculation of CAASaturnRingDetails::DeltaU in the method
+                          CAASaturnRings::Calculate where for some date ranges the value would end up greater 
+                          than 180 degrees. The book indicates that this value should never be more than 7 
+                          degrees. The issue was related to subtraction of two angles to obtain an absolute 
+                          elongation value between the two. By definition this value should never be greater 
+                          than 180 degrees. The bug occurred between the dates of June 3rd 2024 and July 28th 
+                          2024 and December 1st 2024 and February 12 2025. Thanks to Frank Vergeest for 
+                          reporting this bug.
 
-Copyright (c) 2004 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 2004 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -249,9 +258,11 @@ RcppExport SEXP CAASaturnRings_Calculate(SEXP JD_)
   details.Bdash = CAACoordinateTransformation::RadiansToDegrees(asin(sin(irad)*cos(bdashrad)*sin(ldashrad - omegarad) - cos(irad)*sin(bdashrad)));
 
   //Step 9. Calculate DeltaU
-  double U1 = atan2(sin(irad)*sin(bdashrad) + cos(irad)*cos(bdashrad)*sin(ldashrad - omegarad), cos(bdashrad)*cos(ldashrad - omegarad));
-  double U2 = atan2(sin(irad)*sin(beta) + cos(irad)*cos(beta)*sin(lambda - omegarad), cos(beta)*cos(lambda - omegarad));
-  details.DeltaU = CAACoordinateTransformation::RadiansToDegrees(fabs(U1 - U2));
+  details.U1 = CAACoordinateTransformation::MapTo0To360Range(CAACoordinateTransformation::RadiansToDegrees(atan2(sin(irad)*sin(bdashrad) + cos(irad)*cos(bdashrad)*sin(ldashrad - omegarad), cos(bdashrad)*cos(ldashrad - omegarad))));
+  details.U2 = CAACoordinateTransformation::MapTo0To360Range(CAACoordinateTransformation::RadiansToDegrees(atan2(sin(irad)*sin(beta) + cos(irad)*cos(beta)*sin(lambda - omegarad), cos(beta)*cos(lambda - omegarad))));
+  details.DeltaU = fabs(details.U1 - details.U2);
+  if (details.DeltaU > 180)
+   details.DeltaU = 360 - details.DeltaU;
 
   //Step 10. Calculate the Nutations 
   double Obliquity = CAANutation::TrueObliquityOfEcliptic(JD);
@@ -285,6 +296,11 @@ RcppExport SEXP CAASaturnRings_Calculate(SEXP JD_)
   //Step 15. Calculate the Position angle
   details.P = CAACoordinateTransformation::RadiansToDegrees(atan2(cos(delta0)*sin(alpha0 - alpha), sin(delta0)*cos(delta) - cos(delta0)*sin(delta)*cos(alpha0 - alpha)));
   
-  List res = List::create(Named("a") = details.a, Named("b") =details.b, Named("B") =details.B, Named("Bdash") =details.Bdash, Named("DeltaU") =details.DeltaU, Named("P") =details.P ) ;
+  List res = List::create(Named("a") = details.a, 
+                          Named("b") =details.b, 
+                          Named("B") =details.B, 
+                          Named("Bdash") =details.Bdash, 
+                          Named("DeltaU") =details.DeltaU, 
+                          Named("P") =details.P ) ;
   return (res);
 }
