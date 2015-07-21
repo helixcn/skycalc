@@ -1,8 +1,8 @@
 Package: skycalc
 Type: Package
 Title: Computational Astronomy in R based on PJ Naughter's AA+ library
-Version: 1.61
-Date: 2015-7-12
+Version: 1.62
+Date: 2015-7-21
 Authors@R: person("Jinlong", "Zhang", role = c("aut", "cre"),
 		     email = "jinlongzhang01@gmail.com")
 Author: Jinlong Zhang [aut, cre]

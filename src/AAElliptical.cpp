@@ -35,8 +35,16 @@ History: PJN / 24-05-2004 1. Fixed a missing break statement in CAAElliptical::C
                           this bug. 
          PJN / 10-05-2010 1. The CAAEllipticalObjectDetails::AstrometricGeocenticRA value is now known as
                           AstrometricGeocentricRA. Thanks to Scott Marley for reporting this spelling mistake
+         PJN / 12-07-2015 1. Fixed a bug in CAAElliptical::Calculate when calculating values for the position
+                          of the Sun. The values returned by this method are now consistent with those returned
+                          using the methods of the CAASun class, the planetarium program SkyMap and the JPL
+                          HORIZON's web site. The errors were of the order of 4 arc seconds in declination and
+                          1.5 seconds of Right ascension for modern times. I have also taken the opportunity to
+                          optimize the code in this method. With these changes the errors are now down to 0.5 
+                          seconds of an angle in declination and right ascension. Thanks to Marko Peric for 
+                          reporting this bug.
 
-Copyright (c) 2003 - 2013 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
+Copyright (c) 2003 - 2015 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
 
 All rights reserved.
 
@@ -86,195 +94,108 @@ double CAAElliptical::DistanceToLightTime(double Distance)
 
 CAAEllipticalPlanetaryDetails CAAElliptical::Calculate(double JD, EllipticalObject object)
 {
-  //What will the the return value
+  //What will be the return value
   CAAEllipticalPlanetaryDetails details;
 
+  //Calculate the position of the earth first
   double JD0 = JD;
-  double L0 = 0;
-  double B0 = 0;
-  double R0 = 0;
-  double cosB0 = 0;
-  if (object != SUN)
-  {
-    L0 = CAAEarth::EclipticLongitude(JD0);
-    B0 = CAAEarth::EclipticLatitude(JD0);
-    R0 = CAAEarth::RadiusVector(JD0);
-    L0 = CAACoordinateTransformation::DegreesToRadians(L0);
-    B0 = CAACoordinateTransformation::DegreesToRadians(B0);
-    cosB0 = cos(B0);
-  }
+  double L0 = CAAEarth::EclipticLongitude(JD0);
+  double B0 = CAAEarth::EclipticLatitude(JD0);
+  double R0 = CAAEarth::RadiusVector(JD0);
+  L0 = CAACoordinateTransformation::DegreesToRadians(L0);
+  B0 = CAACoordinateTransformation::DegreesToRadians(B0);
+  double cosB0 = cos(B0);
 
-
-  //Calculate the initial values
+  //Iterate to find the positions adjusting for light-time correction if required
   double L = 0;
   double B = 0;
   double R = 0;
-  switch (object)
+  if (object != SUN)
   {
-    case SUN:
+    bool bRecalc = true;
+    bool bFirstRecalc = true;
+    double LPrevious = 0;
+    double BPrevious = 0;
+    double RPrevious = 0;
+    while (bRecalc)
     {
-      L = CAASun::GeometricEclipticLongitude(JD0);
-      B = CAASun::GeometricEclipticLatitude(JD0);
-      R = CAAEarth::RadiusVector(JD0);
-      break;
-    }
-    case MERCURY:
-    {
-      L = CAAMercury::EclipticLongitude(JD0);
-      B = CAAMercury::EclipticLatitude(JD0);
-      R = CAAMercury::RadiusVector(JD0);
-      break;
-    }
-    case VENUS:
-    {
-      L = CAAVenus::EclipticLongitude(JD0);
-      B = CAAVenus::EclipticLatitude(JD0);
-      R = CAAVenus::RadiusVector(JD0);
-      break;
-    }
-    case MARS:
-    {
-      L = CAAMars::EclipticLongitude(JD0);
-      B = CAAMars::EclipticLatitude(JD0);
-      R = CAAMars::RadiusVector(JD0);
-      break;
-    }
-    case JUPITER:
-    {
-      L = CAAJupiter::EclipticLongitude(JD0);
-      B = CAAJupiter::EclipticLatitude(JD0);
-      R = CAAJupiter::RadiusVector(JD0);
-      break;
-    }
-    case SATURN:
-    {
-      L = CAASaturn::EclipticLongitude(JD0);
-      B = CAASaturn::EclipticLatitude(JD0);
-      R = CAASaturn::RadiusVector(JD0);
-      break;
-    }
-    case URANUS:
-    {
-      L = CAAUranus::EclipticLongitude(JD0);
-      B = CAAUranus::EclipticLatitude(JD0);
-      R = CAAUranus::RadiusVector(JD0);
-      break;
-    }
-    case NEPTUNE:
-    {
-      L = CAANeptune::EclipticLongitude(JD0);
-      B = CAANeptune::EclipticLatitude(JD0);
-      R = CAANeptune::RadiusVector(JD0);
-      break;
-    }
-    case PLUTO:
-    {
-      L = CAAPluto::EclipticLongitude(JD0);
-      B = CAAPluto::EclipticLatitude(JD0);
-      R = CAAPluto::RadiusVector(JD0);
-      break;
-    }
-    default:
-    {
-      assert(false);
-      break;
-    }
-  }
+      switch (object)
+      {
+        case MERCURY:
+        {
+          L = CAAMercury::EclipticLongitude(JD0);
+          B = CAAMercury::EclipticLatitude(JD0);
+          R = CAAMercury::RadiusVector(JD0);
+          break;
+        }
+        case VENUS:
+        {
+          L = CAAVenus::EclipticLongitude(JD0);
+          B = CAAVenus::EclipticLatitude(JD0);
+          R = CAAVenus::RadiusVector(JD0);
+          break;
+        }
+        case MARS:
+        {
+          L = CAAMars::EclipticLongitude(JD0);
+          B = CAAMars::EclipticLatitude(JD0);
+          R = CAAMars::RadiusVector(JD0);
+          break;
+        }
+        case JUPITER:
+        {
+          L = CAAJupiter::EclipticLongitude(JD0);
+          B = CAAJupiter::EclipticLatitude(JD0);
+          R = CAAJupiter::RadiusVector(JD0);
+          break;
+        }
+        case SATURN:
+        {
+          L = CAASaturn::EclipticLongitude(JD0);
+          B = CAASaturn::EclipticLatitude(JD0);
+          R = CAASaturn::RadiusVector(JD0);
+          break;
+        }
+        case URANUS:
+        {
+          L = CAAUranus::EclipticLongitude(JD0);
+          B = CAAUranus::EclipticLatitude(JD0);
+          R = CAAUranus::RadiusVector(JD0);
+          break;
+        }
+        case NEPTUNE:
+        {
+          L = CAANeptune::EclipticLongitude(JD0);
+          B = CAANeptune::EclipticLatitude(JD0);
+          R = CAANeptune::RadiusVector(JD0);
+          break;
+        }
+        case PLUTO:
+        {
+          L = CAAPluto::EclipticLongitude(JD0);
+          B = CAAPluto::EclipticLatitude(JD0);
+          R = CAAPluto::RadiusVector(JD0);
+          break;
+        }
+        default:
+        {
+          assert(false);
+          break;
+        }
+      }
 
-  bool bRecalc = true;
-  bool bFirstRecalc = true;
-  double LPrevious = 0;
-  double BPrevious = 0;
-  double RPrevious = 0;
-  while (bRecalc)
-  {
-    switch (object)
-    {
-      case SUN:
+      if (!bFirstRecalc)
       {
-        L = CAASun::GeometricEclipticLongitude(JD0);
-        B = CAASun::GeometricEclipticLatitude(JD0);
-        R = CAAEarth::RadiusVector(JD0);
-        break;
+        bRecalc = ((fabs(L - LPrevious) > 0.00001) || (fabs(B - BPrevious) > 0.00001) || (fabs(R - RPrevious) > 0.000001));
+        LPrevious = L;
+        BPrevious = B;
+        RPrevious = R;
       }
-      case MERCURY:
-      {
-        L = CAAMercury::EclipticLongitude(JD0);
-        B = CAAMercury::EclipticLatitude(JD0);
-        R = CAAMercury::RadiusVector(JD0);
-        break;
-      }
-      case VENUS:
-      {
-        L = CAAVenus::EclipticLongitude(JD0);
-        B = CAAVenus::EclipticLatitude(JD0);
-        R = CAAVenus::RadiusVector(JD0);
-        break;
-      }
-      case MARS:
-      {
-        L = CAAMars::EclipticLongitude(JD0);
-        B = CAAMars::EclipticLatitude(JD0);
-        R = CAAMars::RadiusVector(JD0);
-        break;
-      }
-      case JUPITER:
-      {
-        L = CAAJupiter::EclipticLongitude(JD0);
-        B = CAAJupiter::EclipticLatitude(JD0);
-        R = CAAJupiter::RadiusVector(JD0);
-        break;
-      }
-      case SATURN:
-      {
-        L = CAASaturn::EclipticLongitude(JD0);
-        B = CAASaturn::EclipticLatitude(JD0);
-        R = CAASaturn::RadiusVector(JD0);
-        break;
-      }
-      case URANUS:
-      {
-        L = CAAUranus::EclipticLongitude(JD0);
-        B = CAAUranus::EclipticLatitude(JD0);
-        R = CAAUranus::RadiusVector(JD0);
-        break;
-      }
-      case NEPTUNE:
-      {
-        L = CAANeptune::EclipticLongitude(JD0);
-        B = CAANeptune::EclipticLatitude(JD0);
-        R = CAANeptune::RadiusVector(JD0);
-        break;
-      }
-      case PLUTO:
-      {
-        L = CAAPluto::EclipticLongitude(JD0);
-        B = CAAPluto::EclipticLatitude(JD0);
-        R = CAAPluto::RadiusVector(JD0);
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
+      else
+        bFirstRecalc = false;  
 
-    if (!bFirstRecalc)
-    {
-      bRecalc = ((fabs(L - LPrevious) > 0.00001) || (fabs(B - BPrevious) > 0.00001) || (fabs(R - RPrevious) > 0.000001));
-      LPrevious = L;
-      BPrevious = B;
-      RPrevious = R;
-    }
-    else
-      bFirstRecalc = false;  
-
-    //Calculate the new value
-    if (bRecalc)
-    {
-      double distance;
-      if (object != SUN)
+      //Calculate the new value
+      if (bRecalc)
       {
         double Lrad = CAACoordinateTransformation::DegreesToRadians(L);
         double Brad = CAACoordinateTransformation::DegreesToRadians(B);
@@ -283,23 +204,34 @@ CAAEllipticalPlanetaryDetails CAAElliptical::Calculate(double JD, EllipticalObje
         double x = R * cosB * cosL - R0 * cosB0 * cos(L0);
         double y = R * cosB * sin(Lrad) - R0 * cosB0 * sin(L0);
         double z = R * sin(Brad) - R0 * sin(B0);
-        distance = sqrt(x*x + y*y + z*z);
-      }
-      else
-        distance = R; //Distance to the sun from the earth is in fact the radius vector
+        double distance = sqrt(x*x + y*y + z*z);
 
-      //Prepare for the next loop around
-      JD0 = JD - CAAElliptical::DistanceToLightTime(distance);
+        //Prepare for the next loop around
+        JD0 = JD - CAAElliptical::DistanceToLightTime(distance);
+      }
     }
   }
 
-  double Lrad = CAACoordinateTransformation::DegreesToRadians(L);
-  double Brad = CAACoordinateTransformation::DegreesToRadians(B);
-  double cosB = cos(Brad);
-  double cosL = cos(Lrad);
-  double x = R * cosB * cosL - R0 * cosB0 * cos(L0);
-  double y = R * cosB * sin(Lrad) - R0 * cosB0 * sin(L0);
-  double z = R * sin(Brad) - R0 * sin(B0);
+  double x = 0;
+  double y = 0;
+  double z = 0;
+  if (object != SUN)
+  {
+    double Lrad = CAACoordinateTransformation::DegreesToRadians(L);
+    double Brad = CAACoordinateTransformation::DegreesToRadians(B);
+    double cosB = cos(Brad);
+    double cosL = cos(Lrad);
+
+    x = R * cosB * cosL - R0 * cosB0 * cos(L0);
+    y = R * cosB * sin(Lrad) - R0 * cosB0 * sin(L0);
+    z = R * sin(Brad) - R0 * sin(B0);
+  }
+  else
+  {
+    x = - R0 * cosB0 * cos(L0);
+    y = - R0 * cosB0 * sin(L0);
+    z = - R0 * sin(B0);
+  }
   double x2 = x*x;
   double y2 = y*y;
 
