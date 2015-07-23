@@ -434,7 +434,7 @@ RcppExport SEXP CAAElliptical_Calculate_Sun(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::SUN);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -448,7 +448,7 @@ RcppExport SEXP CAAElliptical_Calculate_Mercury(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::MERCURY);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -462,7 +462,7 @@ RcppExport SEXP CAAElliptical_Calculate_Venus(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::VENUS);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -477,7 +477,7 @@ RcppExport SEXP CAAElliptical_Calculate_Mars(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::MARS);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -491,7 +491,7 @@ RcppExport SEXP CAAElliptical_Calculate_Jupiter(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::JUPITER);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -505,7 +505,7 @@ RcppExport SEXP CAAElliptical_Calculate_Saturn(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::SATURN);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -519,7 +519,7 @@ RcppExport SEXP CAAElliptical_Calculate_Uranus(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::URANUS);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -533,7 +533,7 @@ RcppExport SEXP CAAElliptical_Calculate_Neptune(SEXP JD_){
     double JD = as<double>(JD_);
     CAAEllipticalPlanetaryDetails details;
     details = CAAElliptical::Calculate(JD, CAAElliptical::NEPTUNE);
-    return(List::create(   Named("ApparentGeocentricDistance  ")=details.ApparentGeocentricDistance,
+    return(List::create(   Named("ApparentGeocentricDistance")=details.ApparentGeocentricDistance,
                            Named("ApparentLightTime")=details.ApparentLightTime,
                            Named("ApparentGeocentricLongitude")=details.ApparentGeocentricLongitude,
                            Named("ApparentGeocentricLatitude")=details.ApparentGeocentricLatitude,
@@ -693,23 +693,23 @@ RcppExport SEXP CAAElliptical_Calculate(SEXP JD_,
       JD0 = JD - details.TrueGeocentricLightTime;
   }
     
-  return List::create(Named("HeliocentricRectangularEquatorial.X ") = details.HeliocentricRectangularEquatorial.X,
-             Named("HeliocentricRectangularEquatorial.Y ") = details.HeliocentricRectangularEquatorial.Y,
-             Named("HeliocentricRectangularEquatorial.Z ") = details.HeliocentricRectangularEquatorial.Z,
-             Named("HeliocentricRectangularEcliptical.X ") = details.HeliocentricRectangularEcliptical.X,
-             Named("HeliocentricRectangularEcliptical.Y ") = details.HeliocentricRectangularEcliptical.Y,
-             Named("HeliocentricRectangularEcliptical.Z ") = details.HeliocentricRectangularEcliptical.Z,
-             Named("HeliocentricEclipticLongitude       ") = details.HeliocentricEclipticLongitude      ,
-             Named("HeliocentricEclipticLatitude        ") = details.HeliocentricEclipticLatitude       ,
-             Named("TrueGeocentricRA                    ") = details.TrueGeocentricRA                   ,
-             Named("TrueGeocentricDeclination           ") = details.TrueGeocentricDeclination          ,
-             Named("TrueGeocentricDistance              ") = details.TrueGeocentricDistance             ,
-             Named("TrueGeocentricLightTime             ") = details.TrueGeocentricLightTime            ,
-             Named("AstrometricGeocentricRA             ") = details.AstrometricGeocentricRA            ,
-             Named("AstrometricGeocentricDeclination    ") = details.AstrometricGeocentricDeclination   ,
-             Named("AstrometricGeocentricDistance       ") = details.AstrometricGeocentricDistance      ,
-             Named("AstrometricGeocentricLightTime      ") = details.AstrometricGeocentricLightTime     ,
-             Named("Elongation                          ") = details.Elongation                         );
+  return List::create(Named("HeliocentricRectangularEquatorial.X") = details.HeliocentricRectangularEquatorial.X,
+             Named("HeliocentricRectangularEquatorial.Y") = details.HeliocentricRectangularEquatorial.Y,
+             Named("HeliocentricRectangularEquatorial.Z") = details.HeliocentricRectangularEquatorial.Z,
+             Named("HeliocentricRectangularEcliptical.X") = details.HeliocentricRectangularEcliptical.X,
+             Named("HeliocentricRectangularEcliptical.Y") = details.HeliocentricRectangularEcliptical.Y,
+             Named("HeliocentricRectangularEcliptical.Z") = details.HeliocentricRectangularEcliptical.Z,
+             Named("HeliocentricEclipticLongitude") = details.HeliocentricEclipticLongitude      ,
+             Named("HeliocentricEclipticLatitude") = details.HeliocentricEclipticLatitude       ,
+             Named("TrueGeocentricRA") = details.TrueGeocentricRA                   ,
+             Named("TrueGeocentricDeclination") = details.TrueGeocentricDeclination          ,
+             Named("TrueGeocentricDistance") = details.TrueGeocentricDistance             ,
+             Named("TrueGeocentricLightTime") = details.TrueGeocentricLightTime            ,
+             Named("AstrometricGeocentricRA") = details.AstrometricGeocentricRA            ,
+             Named("AstrometricGeocentricDeclination") = details.AstrometricGeocentricDeclination   ,
+             Named("AstrometricGeocentricDistance") = details.AstrometricGeocentricDistance      ,
+             Named("AstrometricGeocentricLightTime") = details.AstrometricGeocentricLightTime     ,
+             Named("Elongation") = details.Elongation                         );
 }
 
 RcppExport SEXP CAAElliptical_InstantaneousVelocity(SEXP r_, SEXP a_)
